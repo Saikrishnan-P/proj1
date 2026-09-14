@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: codesage
+      POSTGRES_PASSWORD: codesage
+      POSTGRES_DB: codesage
+    ports:
+      - "5432:5432"
+    volumes:
+      - codesage_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codesage"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - codesage_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Optional -- only needed if you're testing networked Chroma mode
+  # locally (multiple ingest workers sharing one vector store). Leave
+  # CHROMA_SERVER_HOST unset in .env to skip this entirely and use the
+  # simpler local-file client instead; this service just sits unused then.
+  chroma:
+    image: chromadb/chroma:0.5.15
+    ports:
+      - "8001:8000"
+    volumes:
+      - codesage_chroma_data:/chroma/chroma
+
+volumes:
+  codesage_postgres_data:
+  codesage_redis_data:
+  codesage_chroma_data:

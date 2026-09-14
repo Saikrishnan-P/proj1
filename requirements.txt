@@ -1,0 +1,47 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+
+langgraph==0.2.34
+langchain-core==0.3.10
+
+chromadb==0.5.15
+posthog==3.7.0
+sentence-transformers==3.1.1
+
+# tree-sitter grammars for AST-based chunking of non-Python languages
+tree_sitter==0.26.0
+tree_sitter_javascript==0.25.0
+tree_sitter_typescript==0.23.2
+tree_sitter_java==0.23.5
+tree_sitter_html==0.23.2
+tree_sitter_css==0.25.0
+tree_sitter_scss==1.0.0
+
+groq==0.11.0
+httpx==0.27.2
+
+# Auth — JWT bearer tokens for user accounts (see app/auth.py). Password
+# hashing itself uses stdlib hashlib, no extra dependency needed for that.
+pyjwt==2.9.0
+
+# GitHub OAuth token encryption at rest (see auth.py's encrypt_token) --
+# a GitHub access token is a live, immediately-usable credential, unlike a
+# one-way password hash, so it's encrypted rather than stored as plaintext.
+cryptography==43.0.1
+
+# Postgres — users, query_history, and chunks (full-text search, replacing
+# rank-bm25 + the pickle file it used to persist to). See app/db.py.
+psycopg2-binary==2.9.9
+
+# Redis + RQ — ingestion job queue, replacing the in-process dict +
+# threading/BackgroundTasks in main.py. See app/jobs.py and worker.py.
+redis==5.0.8
+rq==1.16.2
+
+python-dotenv==1.0.1
+pytest==8.3.3
+
+# Stripe -- prepaid credit purchases for the third-party API platform
+# (Checkout Sessions + webhook verification). See app/billing.py.
+stripe==11.1.1
